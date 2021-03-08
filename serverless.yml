@@ -1,0 +1,60 @@
+service: email-failsafe-service
+
+frameworkVersion: '2'
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+
+provider:
+  name: aws
+  stage: dev
+  runtime: python3.8
+  region: eu-central-1
+  lambdaHashingVersion: 20201221
+  environment:  
+    EMAIL_SENDER: sandboxb7c1455d3d234ec7b45df8a513e35cef.mailgun.org
+    REGION: eu-west-1
+    EMAIL_TABLE: emailTable
+    MAILGUN_API_KEY: 11c5997330a839dc8e4044d4aaaab347-29561299-80c2d8e7
+    MAILGUN_BASE_URL: https://api.mailgun.net/v3/sandboxb7c1455d3d234ec7b45df8a513e35cef.mailgun.org/messages
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn" ] }
+
+functions:
+  handler:
+    handler: handler.handler
+    events:
+      - httpApi:
+          path: /emails/post
+          method: POST
+
+resources:
+  Resources:
+    UsersDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: emailId
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: emailId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: emailTable
