@@ -18,22 +18,32 @@ MAILGUN_URL = os.environ["MAILGUN_BASE_URL"]
 
 
 def handler(event, context):
-    body = event["body"]
-    body = json.loads(body)
-    logging.info(body)
+    body = _get_body_from_event(event)
 
     email_status = _send_ses_email(body)
 
+    #Boolean False means there has been an error with AWS SES email sending process.
     if email_status == False:
-        backup_email_sender_status = _send_mailgun_email(body)
-    if backup_email_sender_status == False:
-        body["email_status"] = False
+        #If AWS SES has failed use Mailgun as a backup email sender.
+        backup_email_status = _send_mailgun_email(body)
+
+    #Boolean False means there has been an error with Mailgunemail sending process.
+    if backup_email_status == False:
+        #Add email status so the email failure is saved to database.
+        body["email_status"] = "Failure"
 
     _write_to_dynamo(body)
 
-    response = _get_response(body)
+    response = _create_response(body)
 
     return response
+
+
+def _get_body_from_event(event):
+    body = event["body"]
+    body = json.loads(body)
+    logging.info(body)
+    return body
 
 
 def _send_ses_email(body):
@@ -122,13 +132,16 @@ def _send_mailgun_email(body):
 
 
 def _write_to_dynamo(write_object):
+    """
+        Save email data to a DynamoDb table.
+    """
     client = boto3.resource('dynamodb')
     table = client.Table(EMAIL_TABLE)
     write_object["emailId"] =  str(uuid.uuid4())
     table.put_item(Item=write_object)
 
 
-def _get_response(body):
+def _create_response(body):
     if "email_status" in body:
         return {
         "status": 400,
