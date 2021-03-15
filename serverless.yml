@@ -35,6 +35,7 @@ provider:
 
 functions:
   handler:
+    description: Lambda for sending emails. 
     handler: handler.handler
     events:
       - httpApi:
