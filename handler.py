@@ -25,13 +25,6 @@ def handler(event, context):
     if not _check_email_status(email_status):
         #If AWS SES has failed use Mailgun as a backup email sender.
         backup_email_status = _send_mailgun_email(body)
-        body["email_status"] = "Success"
-
-        if not _check_email_status(backup_email_status):
-            #Add status to save success or failure.
-            body["email_status"] = "Failure"
-        else:
-            body["email_status"] = "Success"
 
     _write_to_dynamo(body)
 
