@@ -22,15 +22,16 @@ def handler(event, context):
 
     email_status = _send_ses_email(body)
 
-    #Boolean False means there has been an error with AWS SES email sending process.
-    if email_status == False:
+    if not _check_email_status(email_status):
         #If AWS SES has failed use Mailgun as a backup email sender.
         backup_email_status = _send_mailgun_email(body)
+        body["email_status"] = "Success"
 
-    #Boolean False means there has been an error with Mailgunemail sending process.
-    if backup_email_status == False:
-        #Add email status so the email failure is saved to database.
-        body["email_status"] = "Failure"
+        if not _check_email_status(backup_email_status):
+            #Add status to save success or failure.
+            body["email_status"] = "Failure"
+        else:
+            body["email_status"] = "Success"
 
     _write_to_dynamo(body)
 
@@ -107,6 +108,11 @@ def _send_ses_email(body):
         logger.info(response['MessageId'])
 
         return True
+        
+def _check_email_status(email_status):
+    if email_status:
+        return True
+    return False
 
 
 def _send_mailgun_email(body):
