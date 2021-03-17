@@ -16,11 +16,11 @@ provider:
   region: eu-central-1
   lambdaHashingVersion: 20201221
   environment:  
-    EMAIL_SENDER: sandboxb7c1455d3d234ec7b45df8a513e35cef.mailgun.org
+    EMAIL_SENDER: 
     REGION: eu-west-1
     EMAIL_TABLE: emailTable
-    MAILGUN_API_KEY: 11c5997330a839dc8e4044d4aaaab347-29561299-80c2d8e7
-    MAILGUN_BASE_URL: https://api.mailgun.net/v3/sandboxb7c1455d3d234ec7b45df8a513e35cef.mailgun.org/messages
+    MAILGUN_API_KEY: 
+    MAILGUN_BASE_URL: 
   iamRoleStatements:
     - Effect: Allow
       Action:
