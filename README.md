@@ -9,7 +9,7 @@ Paste this command into the terminal:
 curl --header "Content-Type: application/json" 
 / --request POST 
 / --data '{"mailAddress": "<email_address>", "content": <YOUR_CONTENT>, "subject": <YOUR_SUBJECT>}' 
-/ https://r6zhv86tb6.execute-api.eu-central-1.amazonaws.com/emails/post
+/ <api_gateway_end_point>
 
 Currently the email address is locked to one specific verified email address. Contact email owner to see if the email sending was succesful.
 
