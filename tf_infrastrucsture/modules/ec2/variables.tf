@@ -13,3 +13,11 @@ variable "environment_tag" {
 variable "public_key" {
   type = string
 }
+
+variable "subnet_id" {
+  type = string
+}
+
+variable "aws_security_group_i" {
+  type = string
+}

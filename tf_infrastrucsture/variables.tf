@@ -1,9 +1,9 @@
-variable "cidr_vpc" {
+variable "voc_cidr" {
   description = "CIDR block for the VPC"
   default     = "10.1.0.0/16"
 }
 
-variable "cidr_subnet" {
+variable "subnet_cidr" {
   description = "CIDR block for the subnet"
   default     = "10.1.0.0/24"
 }
@@ -13,9 +13,8 @@ variable "availability_zone" {
   default     = "eu-west-1a"
 }
 
-variable "public_key_path" {
+variable "public_key" {
   description = "Public key path"
-  default     = "~/.ssh/id_rsa.pub"
 }
 
 variable "instance_ami" {
@@ -26,9 +25,4 @@ variable "instance_ami" {
 variable "instance_type" {
   description = "type for aws EC2 instance"
   default     = "t2.micro"
-}
-
-variable "environment_tag" {
-  description = "Environment tag"
-  default     = "test"
 }
