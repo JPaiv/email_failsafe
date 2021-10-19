@@ -9,7 +9,4 @@ resource "aws_instance" "testInstance" {
   subnet_id              = var.subnet_id
   vpc_security_group_ids = [var.security_group_id]
   key_name               = aws_key_pair.ec2_public_key.key_name
-  tags {
-    Environment = var.environment_tag
-  }
 }
