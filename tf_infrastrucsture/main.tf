@@ -21,7 +21,6 @@ module "vpc" {
   vpc_cidr          = var.vpc_cidr
   subnet_cidr       = var.subnet_cidr
   environment_tag   = local.environment_tag
-
 }
 
 module "ec2" {
@@ -32,4 +31,8 @@ module "ec2" {
   environment_tag   = local.environment_tag
   subnet_id         = module.vpc.subnet_id
   security_group_id = module.vpc.security_group_id
+
+  depends_on = [
+    module.vpc
+  ]
 }
