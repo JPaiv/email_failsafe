@@ -9,10 +9,6 @@ resource "aws_vpc" "main" {
 
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.main.id
-
-  tags {
-    Environment = var.environment_tag
-  }
 }
 
 resource "aws_subnet" "public_subnet" {
@@ -20,9 +16,6 @@ resource "aws_subnet" "public_subnet" {
   cidr_block              = var.subnet_cidr
   map_public_ip_on_launch = "true"
   availability_zone       = var.availability_zone
-  tags {
-    Environment = var.environment_tag
-  }
 }
 
 resource "aws_route_table" "public_route_table" {
@@ -58,8 +51,5 @@ resource "aws_security_group" "public_port_22_security_group" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-  tags {
-    Environment = var.environment_tag
   }
 }
