@@ -82,6 +82,8 @@ jobs:
       # Optional
       #- name: Build assets
       #  run: npm run assets-dev
+      - name: install serverless python requirements
+        run: serverless plugin install -n serverless-python-requirements
       - name: Deploy Lambda functions
         working-directory: ./serverless
         run: sls deploy
