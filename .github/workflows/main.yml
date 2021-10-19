@@ -62,10 +62,12 @@ jobs:
     #   matrix:
     #     node-version: [14.8.1]
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: "14.8.1"
+          node-version: "14"
+      - run: npm install
+      - run: npm test
       - name: Install Serverless Framework
         run: npm install -g serverless
       - name: Serverless AWS authentication
