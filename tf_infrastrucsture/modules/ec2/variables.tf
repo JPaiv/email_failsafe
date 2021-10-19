@@ -9,3 +9,7 @@ variable "instance_type" {
 variable "environment_tag" {
   type = string
 }
+
+variable "public_key" {
+  type = string
+}

@@ -10,7 +10,7 @@ jobs:
     env:
       TF_VAR_region: eu-central-1
       TF_VAR_stage: test
-      TF_VAR_public_key: ${{ secrets.public_key }}
+      TF_VAR_public_key: ${{ secrets.public_key  }}
 
     name: "Terraform"
     runs-on: ubuntu-latest

@@ -1,6 +1,6 @@
 resource "aws_key_pair" "ec2_public_key" {
   key_name   = "${var.environment_tag}_ec2_public_key"
-  public_key = file(var.public_key_path)
+  public_key = var.public_key
 }
 
 resource "aws_instance" "testInstance" {
