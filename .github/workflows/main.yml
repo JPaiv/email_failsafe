@@ -58,9 +58,9 @@ jobs:
   serverless:
     name: "Serverless"
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.8.1]
+    # strategy:
+    #   matrix:
+    #     node-version: [14.8.1]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -68,8 +68,8 @@ jobs:
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
+        # with:
+        #   node-version: ${{ matrix.node-version }}
         continue-on-error: false
 
       - name: serverless deploy
