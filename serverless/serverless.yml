@@ -1,6 +1,6 @@
 service: email-failsafe-service
 
-frameworkVersion: '2'
+frameworkVersion: "2"
 
 plugins:
   - serverless-python-requirements
@@ -11,16 +11,19 @@ custom:
 
 provider:
   name: aws
-  stage: dev
+  stage: test
   runtime: python3.8
   region: eu-central-1
   lambdaHashingVersion: 20201221
-  environment:  
-    EMAIL_SENDER: 
+  vpc:
+    subnetIds:
+      - ${ssm:vpc_public_subnet_id}
+    securityGroupIds:
+      - ${ssm:vpc_security_group_id}
+  environment:
+    EMAIL_SENDER:
     REGION: eu-west-1
     EMAIL_TABLE: emailTable
-    MAILGUN_API_KEY: 
-    MAILGUN_BASE_URL: 
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -31,11 +34,11 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn" ] }
+        - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn"] }
 
 functions:
   handler:
-    description: Lambda for sending emails. 
+    description: Lambda for sending emails.
     handler: handler.handler
     events:
       - httpApi:
@@ -45,15 +48,13 @@ functions:
 resources:
   Resources:
     UsersDynamoDBTable:
-      Type: 'AWS::DynamoDB::Table'
+      Type: "AWS::DynamoDB::Table"
       Properties:
         AttributeDefinitions:
-          -
-            AttributeName: emailId
+          - AttributeName: emailId
             AttributeType: S
         KeySchema:
-          -
-            AttributeName: emailId
+          - AttributeName: emailId
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
