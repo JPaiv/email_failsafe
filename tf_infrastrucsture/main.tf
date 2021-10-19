@@ -25,10 +25,9 @@ module "vpc" {
 }
 
 module "ec2" {
-  source            = "./modules/ec2"
-  availability_zone = availability_zone
-  public_key        = var.public_key
-  instance_ami      = var.instance_ami
-  instance_type     = var.instance_type
-  environment_tag   = local.environment_tag
+  source          = "./modules/ec2"
+  public_key      = var.public_key
+  instance_ami    = var.instance_ami
+  instance_type   = var.instance_type
+  environment_tag = local.environment_tag
 }
